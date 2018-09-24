@@ -1,0 +1,184 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+
+/**
+ * Incident
+ *
+ * @ORM\Table(name="incident")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\IncidentRepository")
+ * @ExclusionPolicy("all")
+ */
+class Incident
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @Expose
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime")
+     * @Expose
+     */
+    private $date;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=255)
+     * @Expose
+     */
+    private $description;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SpecialityIncident",mappedBy="incident" , cascade={"remove","persist"}) 
+     * @Expose     
+     */
+    private $specialityLines;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Devis",mappedBy="incident" , cascade={"remove","persist"}) 
+     * @Expose     
+     */
+    private $devis;
+
+    /**
+     *@ORM\ManyToOne(targetEntity="AppBundle\Entity\Person") 
+     *
+     *      
+     */ 
+    private $person;
+    
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Incident
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Incident
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set person
+     *
+     * @param \AppBundle\Entity\Person $person
+     *
+     * @return Incident
+     */
+    public function setPerson(\AppBundle\Entity\Person $person = null)
+    {
+        $this->person = $person;
+
+        return $this;
+    }
+
+    /**
+     * Get person
+     *
+     * @return \AppBundle\Entity\Person
+     */
+    public function getPerson()
+    {
+        return $this->person;
+    }
+    
+    function __construct() {
+        $this->date = new \DateTime();
+        $this->specialityLines= new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+
+    /**
+     * Add specialityLine
+     *
+     * @param \AppBundle\Entity\SpecialityIncident $specialityLine
+     *
+     * @return Incident
+     */
+    public function addSpecialityLine(\AppBundle\Entity\SpecialityIncident $specialityLine)
+    {
+        $this->specialityLines[] = $specialityLine;
+
+        return $this;
+    }
+
+    /**
+     * Remove specialityLine
+     *
+     * @param \AppBundle\Entity\SpecialityIncident $specialityLine
+     */
+    public function removeSpecialityLine(\AppBundle\Entity\SpecialityIncident $specialityLine)
+    {
+        $this->specialityLines->removeElement($specialityLine);
+    }
+
+    /**
+     * Get specialityLines
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSpecialityLines()
+    {
+        return $this->specialityLines;
+    }
+}
