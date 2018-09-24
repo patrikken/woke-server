@@ -5,7 +5,11 @@ A Symfony project created on September 26, 2017, 5:24 pm.
 
 run `composer install` to install dependencies 
 
-##OAuth 2
+## Database
+`php bin/console doctrine:schema:update --force`
+
+## OAuth 2
+
 Authentication is done via the OAuth2 protocol. 
 
 run 
